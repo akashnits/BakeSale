@@ -19,9 +19,7 @@ class App extends React.Component {
     //lifecycle method to be called first
     const deals = await ajax.fetchInitialDeals();
     console.log(deals);
-    this.setState((prevState) => {
-      return {deals: deals};
-    });
+    this.setState({deals: deals});
   }
   render() {
     return (
