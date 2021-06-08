@@ -4,11 +4,13 @@ import {View, Text, StyleSheet} from 'react-native';
 import ajax from '../ajax';
 import DealList from './DealList';
 import DealDetail from './DealDetail';
+import SearchBar from './SearchBar';
 
 class App extends React.Component {
   state = {
     deals: [],
     currentDeal: null,
+    searchDeals: [],
   };
   async componentDidMount() {
     const deals = await ajax.fetchInitialDeals();
@@ -24,6 +26,17 @@ class App extends React.Component {
       currentDeal: null,
     });
   };
+  searchDeals = async searchText => {
+    //update searchDeals
+    let searchResults = await ajax.fetchDealFromSearch(searchText);
+    this.setState(prevState => {
+      if (searchText) {
+        return {searchDeals: searchResults};
+      } else {
+        return {searchDeals: []};
+      }
+    });
+  };
   render() {
     if (this.state.currentDeal) {
       return (
@@ -33,9 +46,16 @@ class App extends React.Component {
         />
       );
     }
-    if (this.state.deals.length > 0) {
+    let dealsToDisplay =
+      this.state.searchDeals.length > 0
+        ? this.state.searchDeals
+        : this.state.deals;
+    if (dealsToDisplay.length > 0) {
       return (
-        <DealList deals={this.state.deals} onItemPress={this.setCurrentDeal} />
+        <View style={styles.main}>
+          <SearchBar search={this.searchDeals} />
+          <DealList deals={dealsToDisplay} onItemPress={this.setCurrentDeal} />
+        </View>
       );
     }
     return (
@@ -54,6 +74,9 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 40,
+  },
+  main: {
+    marginTop: 50,
   },
 });
 
