@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 
 import {priceDisplay} from '../utils';
 import ajax from '../ajax';
@@ -8,6 +8,7 @@ import ajax from '../ajax';
 class DealDetail extends React.Component {
   static propTypes = {
     initialDealData: PropTypes.object.isRequired,
+    onBackPress: PropTypes.func.isRequired,
   };
   state = {
     dealData: this.props.initialDealData,
@@ -22,6 +23,9 @@ class DealDetail extends React.Component {
     const {dealData} = this.state;
     return (
       <View style={styles.deal}>
+        <TouchableOpacity onPress={this.props.onBackPress}>
+          <Text>Back</Text>
+        </TouchableOpacity>
         <Image source={{uri: dealData.media[0]}} style={styles.image} />
         <View style={styles.detail}>
           <View>

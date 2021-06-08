@@ -19,9 +19,19 @@ class App extends React.Component {
       currentDeal: this.state.deals.find(deal => deal.key === dealId),
     });
   };
+  unsetCurrentDeal = () => {
+    this.setState({
+      currentDeal: null,
+    });
+  };
   render() {
     if (this.state.currentDeal) {
-      return <DealDetail initialDealData={this.state.currentDeal} />;
+      return (
+        <DealDetail
+          initialDealData={this.state.currentDeal}
+          onBackPress={this.unsetCurrentDeal}
+        />
+      );
     }
     if (this.state.deals.length > 0) {
       return (
