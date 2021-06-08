@@ -22,32 +22,34 @@ class DealDetail extends React.Component {
   render() {
     const {dealData} = this.state;
     return (
-      <View style={styles.deal}>
+      <View style={styles.container}>
         <TouchableOpacity onPress={this.props.onBackPress}>
-          <Text>Back</Text>
+          <Text style={styles.backlink}>Back</Text>
         </TouchableOpacity>
-        <Image source={{uri: dealData.media[0]}} style={styles.image} />
-        <View style={styles.detail}>
-          <View>
-            <Text style={styles.title}>{dealData.title}</Text>
-          </View>
-          <View style={styles.footer}>
-            <View style={styles.info}>
-              <Text style={styles.price}>{priceDisplay(dealData.price)}</Text>
-              <Text style={styles.cause}>{dealData.cause.name}</Text>
+        <View style={styles.deal}>
+          <Image source={{uri: dealData.media[0]}} style={styles.image} />
+          <View style={styles.detail}>
+            <View>
+              <Text style={styles.title}>{dealData.title}</Text>
             </View>
-            {dealData.user && (
-              <View style={styles.user}>
-                <Image
-                  source={{uri: dealData.user.avatar}}
-                  style={styles.avatar}
-                />
-                <Text>{dealData.user.name}</Text>
+            <View style={styles.footer}>
+              <View style={styles.info}>
+                <Text style={styles.price}>{priceDisplay(dealData.price)}</Text>
+                <Text style={styles.cause}>{dealData.cause.name}</Text>
               </View>
-            )}
-          </View>
-          <View style={styles.description}>
-            <Text>{dealData.description}</Text>
+              {dealData.user && (
+                <View style={styles.user}>
+                  <Image
+                    source={{uri: dealData.user.avatar}}
+                    style={styles.avatar}
+                  />
+                  <Text>{dealData.user.name}</Text>
+                </View>
+              )}
+            </View>
+            <View style={styles.description}>
+              <Text>{dealData.description}</Text>
+            </View>
           </View>
         </View>
       </View>
@@ -58,9 +60,11 @@ class DealDetail extends React.Component {
 const styles = StyleSheet.create({
   deal: {
     marginHorizontal: 12,
-    marginTop: 50,
     borderColor: '#bbb',
     borderWidth: 1,
+  },
+  container: {
+    marginTop: 50,
   },
   image: {
     width: '100%',
@@ -79,6 +83,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     marginTop: 15,
+  },
+  backlink: {
+    marginLeft: 12,
+    padding: 4,
+    color: 'blue',
+    fontSize: 18,
   },
   info: {
     alignItems: 'center',
