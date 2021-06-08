@@ -1,34 +1,36 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+
+import {View, Text, StyleSheet} from 'react-native';
 import ajax from '../ajax';
-import {DealList} from './DealList';
+import DealList from './DealList';
+import DealDetail from './DealDetail';
 
 class App extends React.Component {
   state = {
     deals: [],
+    currentDeal: null,
   };
   async componentDidMount() {
-    //lifecycle method to be called first
     const deals = await ajax.fetchInitialDeals();
-    console.log(deals);
-    this.setState({deals: deals});
+    this.setState({deals});
   }
+  setCurrentDeal = dealId => {
+    this.setState({
+      currentDeal: this.state.deals.find(deal => deal.key === dealId),
+    });
+  };
   render() {
+    if (this.state.currentDeal) {
+      return <DealDetail initialDealData={this.state.currentDeal} />;
+    }
+    if (this.state.deals.length > 0) {
+      return (
+        <DealList deals={this.state.deals} onItemPress={this.setCurrentDeal} />
+      );
+    }
     return (
       <View style={styles.container}>
-        {this.state.deals.length > 0 ? (
-          <DealList deals={this.state.deals} />
-        ) : (
-          <Text>BakeSale</Text>
-        )}
+        <Text style={styles.header}>Bakes</Text>
       </View>
     );
   }
@@ -39,6 +41,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  header: {
+    fontSize: 40,
   },
 });
 
